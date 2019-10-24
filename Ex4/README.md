@@ -51,7 +51,7 @@ $ bin/hadoop jar Ex4.jar fbdp.MatrixMultiply tests/input/M_3_4 tests/input/N_4_2
 $ bin/hdfs dfs -cat mm_output/*
 ```
 
-![](pics\1.png)
+![](pics/1.png)
 
 关系代数选择，用法:
 
@@ -88,9 +88,9 @@ $ bin/hadoop jar Ex4.jar fbdp.Selection tests/input/Ra.txt selection_output1/ 2 
 $ bin/hdfs dfs -cat selection_output1/*
 ```
 
-![](pics\2.png)
+![](pics/2.png)
 
-![](pics\3.png)
+![](pics/3.png)
 
 关系代数投影，用法:
 
@@ -115,7 +115,7 @@ $ bin/hadoop jar Ex4.jar fbdp.Projection tests/input/Ra.txt projection_output/ 1
 $ bin/hdfs dfs -cat projection_output/*
 ```
 
-![](pics\4.png)
+![](pics/4.png)
 
 关系投影并集，用法：
 
@@ -130,7 +130,7 @@ $ bin/hadoop jar Ex4.jar fbdp.Union tests/union_input/ union_output/
 $ bin/hdfs dfs -cat union_output/*
 ```
 
-![](pics\5.png)
+![](pics/5.png)
 
 关系投影交集，用法：
 
@@ -145,7 +145,7 @@ $ bin/hadoop jar Ex4.jar fbdp.Intersection tests/inter_input/ inter_output/
 $ bin/hdfs dfs -cat inter_output/*
 ```
 
-![](pics\6.png)
+![](pics/6.png)
 
 关系投影差集，用法：
 
@@ -162,7 +162,7 @@ $ bin/hadoop jar Ex4.jar fbdp.Difference tests/diff_input/ diff_output/ Ra1.txt
 $ bin/hdfs dfs -cat diff_output/*
 ```
 
-![](pics\7.png)
+![](pics/7.png)
 
 关系投影自然连接 ，用法：
 
@@ -181,4 +181,4 @@ $ bin/hadoop jar Ex4.jar fbdp.NaturalJoin tests/join_input/ join_output/ 0 Ra.tx
 $ bin/hdfs dfs -cat join_output/*
 ```
 
-![](pics\8.png)
+![](pics/8.png)
