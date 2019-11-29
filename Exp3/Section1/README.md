@@ -1,6 +1,6 @@
 ---
-typora-root-url: /media/yukho/Data/Documents/GitHub/fbdp2019/Exp3/Section1/pics
 typora-copy-images-to: pics
+
 ---
 
 ## 实验3 阶段1
@@ -123,11 +123,11 @@ public static void main(String[] args) throws Exception {
 
 此处给出部分样例，完整结果在本仓库目录的相同文件夹下查看：
 
-![image-20191129205846522](/../../../../../../../../../pics/image-20191129205846522.png)
+![image-20191129205846522](./pics/image-20191129205846522.png)
 
-![image-20191129205956560](/../../../../../../../../../pics/image-20191129205956560.png)
+![image-20191129205956560](./pics/image-20191129205956560.png)
 
-![image-20191129210015279](/../../../../../../../../../pics/image-20191129210015279.png)
+![image-20191129210015279](./pics/image-20191129210015279.png)
 
 ### **统计购买量**：
 
@@ -148,9 +148,9 @@ public void map(Object key, Text value, Context context
 
 此处同样给出部分样例：
 
-![image-20191129210437105](/../../../../../../../../../pics/image-20191129210437105.png)
+![image-20191129210437105](./pics/image-20191129210437105.png)
 
-![image-20191129210453522](/../../../../../../../../../pics/image-20191129210453522.png)
+![image-20191129210453522](./pics/image-20191129210453522.png)
 
-![image-20191129210507974](/../../../../../../../../../pics/image-20191129210507974.png)
+![image-20191129210507974](./pics/image-20191129210507974.png)
 

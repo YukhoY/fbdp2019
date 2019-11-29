@@ -1,8 +1,3 @@
----
-typora-copy-images-to: pics
-typora-root-url: pics
----
-
 ## 实验3 阶段2
 
 本次实验在Ubuntu系统下进行，预先已完成了Hadoop的安装配置（伪分布式）。
@@ -25,7 +20,7 @@ $ export PATH=$HIVE_HOME/bin:$PATH
 
 修改`hive-env.sh.template`的`HADOOP_HOME`，并**另存为**`hive-env.sh`：
 
-![image-20191127113245473](/image-20191127113245473.png)
+![image-20191127113245473](./pics/image-20191127113245473.png)
 
 创建`hive-site.xml`：
 
@@ -44,7 +39,7 @@ $ export PATH=$HIVE_HOME/bin:$PATH
 </configuration>
 ```
 
-![image-20191127164549964](/image-20191127164549964.png)
+![image-20191127164549964](./pics/image-20191127164549964.png)
 
 现在可以尝试启动Hive Shell了，进入Hive安装目录：
 
@@ -58,11 +53,11 @@ $ bin/hive
 
 覆盖之后，再次运行以上命令，成功启动了：
 
-![image-20191127151535272](/image-20191127151535272.png)
+![image-20191127151535272](./pics/image-20191127151535272.png)
 
 但是一旦输入语句并运行，还会报错：
 
-![image-20191127152829491](/image-20191127152829491.png)
+![image-20191127152829491](./pics/image-20191127152829491.png)
 
 网上说原因是没有初始化metastore。其实启动hive的时候已经自动生成了一个，只不过那个没法用。
 
@@ -74,7 +69,7 @@ $ bin/schematool -dbType derby -initSchema
 
 完成初始化后便可进行shell命令了。如果格式化这一步报错，很可能是运行过一次shell之后，格式化目录已存在，因此需要把安装目录下的metastore_db目录删掉，再进行一次格式化。成功效果如图：
 
-![image-20191127153232659](/image-20191127153232659.png)
+![image-20191127153232659](./pics/image-20191127153232659.png)
 
 继续进行一些基本Hive操作：
 
@@ -90,7 +85,7 @@ hive> DROP TABLE Shakespeare;
 
 走一遍创建删除流程，效果如下：
 
-![image-20191127154029106](/image-20191127154029106.png)
+![image-20191127154029106](./pics/image-20191127154029106.png)
 
 接下来就可以开始做真正实验啦！
 
@@ -114,7 +109,7 @@ hive> LOAD DATA LOCAL INPATH '/home/yukho/fbdp_data/million_user_log.csv' INTO T
 hive> select * from million_user_log limit 0,2;
 ```
 
-![image-20191127182556939](/image-20191127182556939.png)
+![image-20191127182556939](./pics/image-20191127182556939.png)
 
 装载成功！于是我们就可以按照类似于SQL的方式提取数据出来了。
 
@@ -130,7 +125,7 @@ hive> SELECT count(DISTINCT user_id) FROM million_user_log WHERE action=2;
 > 37202
 > Time taken: 17.013 seconds, Fetched: 1 row(s)
 
-![](/image-20191127183946832.png)
+![](./pics/image-20191127183946832.png)
 
 计算男女买家购买的比例，那就在上一条的基础上，按gender列分组，并且按user_id DISTINCT，得到下面代码：
 
@@ -138,7 +133,7 @@ hive> SELECT count(DISTINCT user_id) FROM million_user_log WHERE action=2;
 hive> SELECT gender,count(DISTINCT user_id) FROM million_user_log WHERE action=2 GROUP BY gender;
 ```
 
-![image-20191129200515592](/image-20191129200515592.png)
+![image-20191129200515592](./pics/image-20191129200515592.png)
 
 容易得到男女购买者的比例为22413:22477，接近1:1。当然也可以计算出男女买家分别占总体的比例：
 
@@ -146,7 +141,7 @@ hive> SELECT gender,count(DISTINCT user_id) FROM million_user_log WHERE action=2
 hive> SELECT (gender,count(DISTINCT user_id)/(SELECT count(DISTINCT user_id) FROM million_user_log WHERE action=2)) FROM million_user_log WHERE action=2 GROUP BY gender;
 ```
 
-![image-20191127190445624](/image-20191127190445624.png)
+![image-20191127190445624](./pics/image-20191127190445624.png)
 
 输出的结果有点不科学，但逻辑上似乎没有问题，判断原因正如同学在群里所说，同一个用户id会对应不同的性别导致的。于是想到一个办法，先新建一个表筛选出distinct user_id，再分组会怎么样？（这个后续再实现，暂时没成功）
 
@@ -160,7 +155,7 @@ hive> SELECT (gender,count(DISTINCT user_id)/(SELECT count(DISTINCT user_id) FRO
 hive> SELECT brand_id,count(brand_id) number FROM million_user_log WHERE action=0 GROUP BY brand_id ORDER BY number DESC LIMIT 10;
 ```
 
-![image-20191129201716382](/image-20191129201716382.png)
+![image-20191129201716382](./pics/image-20191129201716382.png)
 
 这里的结果是考虑的是总浏览人次，而如果想要计算的是浏览的人数，即不计算单人重复浏览，则应修改如下：
 
@@ -168,6 +163,6 @@ hive> SELECT brand_id,count(brand_id) number FROM million_user_log WHERE action=
 hive> SELECT brand_id,count(DISTINCT user_id) number FROM million_user_log WHERE action=0 GROUP BY brand_id ORDER BY number DESC LIMIT 10;
 ```
 
-![image-20191129201945548](/image-20191129201945548.png)
+![image-20191129201945548](./pics/image-20191129201945548.png)
 
 则阶段二到此结束。
