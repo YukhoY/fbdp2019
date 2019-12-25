@@ -30,7 +30,13 @@ typora-root-url: ./
 
 根据以上推理，我们分别以“年龄、性别”和“年龄、性别、商家”为输入，通过调用合适的机器学习算法，拟合，分别得出预测模型及评估模型的绩效。
 
-在训练模型之前，先将数据集导入，通过描述性统计获得这个数据集的一些基本特征。我们容易发现，训练集里，回头客标签的正负样本比例极其不均衡。这会给模型带来很大问题。此处我们采取过采样的方法来缓解这个问题。
+在训练模型之前，先将数据集导入，通过描述性统计获得这个数据集的一些基本特征。我们容易发现，训练集里，回头客标签的正负样本比例极其不均衡。这会给模型带来很大问题。如果直接全样本输入，大多数模型的输出都是清一色的**0**，这显然是不科学的，这部分结果就不贴了。
+
+因此处我们采取**过采样**，和**欠采样**的方法来缓解这个问题。
+
+过采样：将正样本复制17次追加到样本集里。
+
+欠采样：从负样本中抽取跟正样本数量一致的样本，合起来再训练。
 
 同样地，我们写出脚本语句直接在spark-shell中操作。
 
@@ -201,3 +207,38 @@ val data = positiveSample.union(negativeSample)
 
 ![image-20191221211419108](./pics/image-20191221211419108.png)
 
+#### 附加实验
+
+除了用MLlib，我也尝试了一下ml库的操作。与MLlib对比起来，ml是基于dataframe的操作，抽象层次更高一点，使用起来更接近于Python Pandas或者R的DataFrame了，还是比较舒适的，这里贴一部分读入数据、输入并训练的代码，结果评价大同小异且意义不太大了，不再赘述。
+
+```scala
+import org.apache.spark.sql.types._
+import org.apache.spark.ml.feature.VectorAssembler
+import org.apache.spark.ml.classification.{GBTClassifier,LinearSVC,LogisticRegression,NaiveBayes,RandomForestClassifier,ProbabilisticClassifier}
+val the_header = StructType(
+	StructField("user_id", LongType)::
+    StructField("age_range", IntegerType)::
+    StructField("gender", IntegerType)::
+    StructField("merchant_id", LongType)::
+    StructField("label", IntegerType)::
+    Nil
+)
+val df_train = spark.read.format("csv").schema(the_header).option("header",false).load("file:///home/yukho/fbdp_data/train_after.csv")
+// 使用 VectorAssembler集成输入特征，作用类似MLlib的LabelPoint方法
+val assembler = new VectorAssembler().setInputCols(Array("age_range","gender","merchant_id")).setOutputCol("features")
+val df = assembler.transform(df_train)
+val Array(train,test) = df.randomSplit(Array(0.8,0.2))
+val gbtc = new GBTClassifier()
+val modelGBTC = gbtc.fit(train)
+modelGBTC.transform(test).show()
+```
+
+![image-20191225113920038](/pics/image-20191225113920038.png)
+
+## 总结
+
+如果出现准确率达到90%+，那估计是因为在整个训练集上，全部预测为负样本，获得一个94.32%的表现，显然这种是不可靠的。
+
+但是将数据集转换成平衡集之后，仍然准确率只能在50%稍微往上，模型优化空间固然还是有的，但估计最大的问题还是数据集本身没有有效的特征，或者说特征与标签之间确实没有太大的关联，那么预测效果不好也能理解。
+
+如果说这次实验的目的只是为了走一遍Spark机器学习的流程的话，那么实验目的还是成功达到了的。
