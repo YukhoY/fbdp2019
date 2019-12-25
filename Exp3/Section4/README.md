@@ -68,7 +68,7 @@ println("Accuracy: "+accuracy+"\nRecall: "+recall+"\nPrecision: "+precision+"\nF
 
 结果评价如下，似乎有点诡异：
 
-![image-20191221190053171](/pics/image-20191221190053171.png)
+![image-20191221190053171](./pics/image-20191221190053171.png)
 
 > TRY 2：分别换成朴素贝叶斯和支持向量机，以用户年龄和性别作为输入，进行训练。在运行过上面命令的基础上：
 
@@ -91,7 +91,7 @@ println("Accuracy: "+accuracy+"\nRecall: "+recall+"\nPrecision: "+precision+"\nF
 
 结果如下（左贝叶斯，右SVM）：没错……就是完 全 一 致！
 
-![image-20191221190151379](/pics/image-20191221190151379.png)![image-20191221190215003](/pics/image-20191221190215003.png)
+![image-20191221190151379](./pics/image-20191221190151379.png)![image-20191221190215003](./pics/image-20191221190215003.png)
 
 这显然是有问题的！其实很容易就发现了，这里预测把所有label都预测成1了……这也不怪训练器，想必是数据集的问题……。那么我们只好再试试加入商家ID之后的情况吧！这次我们把代码写成一体，便于输出结果。
 
@@ -144,11 +144,11 @@ getEvaluates(metrics2, accuracy2, "NaiveBayes")
 getEvaluates(metrics3, accuracy3, "SVM")}
 ```
 
-![image-20191221193043309](/pics/image-20191221193043309.png)
+![image-20191221193043309](./pics/image-20191221193043309.png)
 
-![image-20191221192908351](/pics/image-20191221192908351.png)
+![image-20191221192908351](./pics/image-20191221192908351.png)
 
-![image-20191221193007814](/pics/image-20191221193007814.png)
+![image-20191221193007814](./pics/image-20191221193007814.png)
 
 震惊……除了朴素贝叶斯，那是一点都没有长进啊……
 
@@ -172,7 +172,7 @@ val labeledData = data.map{ line=>
 
 很可惜，结果是一样的……
 
-![image-20191221193601968](/pics/image-20191221193601968.png)
+![image-20191221193601968](./pics/image-20191221193601968.png)
 
 换一个思路，刚刚都是过采样，那要不欠采样一下，看看有没有用？
 
@@ -195,9 +195,9 @@ val data = positiveSample.union(negativeSample)
 
 从结果看来……并无起色……
 
-![image-20191221203858157](/pics/image-20191221203858157.png)
+![image-20191221203858157](./pics/image-20191221203858157.png)
 
 不过偶尔也能行一点……
 
-![image-20191221211419108](/pics/image-20191221211419108.png)
+![image-20191221211419108](./pics/image-20191221211419108.png)
 
